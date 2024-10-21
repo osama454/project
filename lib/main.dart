@@ -8,50 +8,44 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dummy Data List',
+      title: 'Dummy Data List App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyListPage(),
+      home: MyHomePage(),
     );
   }
 }
 
-// Dummy function to fetch data instead of Firebase Firestore
-Future<List<Map<String, dynamic>>> fetchDocuments() async {
-  await Future.delayed(Duration(seconds: 1)); // Simulate network delay
-  // Dummy data
-  List<Map<String, dynamic>> documents = [
-    {'name': 'John Doe', 'age': 30},
-    {'name': 'Jane Smith', 'age': 25},
-    {'name': 'Alice Johnson', 'age': 40},
-    {'name': 'Bob Williams', 'age': 35},
-  ];
-  return documents;
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class MyListPage extends StatefulWidget {
-  @override
-  _MyListPageState createState() => _MyListPageState();
-}
+class _MyHomePageState extends State<MyHomePage> {
+  // Simulate fetching documents with dummy data
+  Future<List<Map<String, dynamic>>> fetchDocuments() async {
+    // Simulated delay
+    await Future.delayed(Duration(seconds: 2));
 
-class _MyListPageState extends State<MyListPage> {
-  late Future<List<Map<String, dynamic>>> _documentsFuture;
+    // Dummy data
+    List<Map<String, dynamic>> documents = [
+      {'field1': 'Document 1', 'field2': 'Extra info 1'},
+      {'field1': 'Document 2', 'field2': 'Extra info 2'},
+      {'field1': 'Document 3', 'field2': 'Extra info 3'},
+    ];
 
-  @override
-  void initState() {
-    super.initState();
-    _documentsFuture = fetchDocuments();
+    return documents;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My List'),
+        title: Text('Dummy Data List'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _documentsFuture,
+        future: fetchDocuments(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -63,8 +57,9 @@ class _MyListPageState extends State<MyListPage> {
               itemCount: documents.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(documents[index]['name'] ?? ''), // Access data like this
-                  // ... other widgets to display the data
+                  title: Text(documents[index][
+                      'field1']), // Replace 'field1' with your actual field name
+                  // Add more widgets to display other fields as needed
                 );
               },
             );
